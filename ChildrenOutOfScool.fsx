@@ -6,27 +6,44 @@ open FSharp.Data
 open XPlot.Plotly
 let wb = WorldBankData.GetDataContext()
 let india = wb.Countries.India.Indicators
+let china = wb.Countries.China.Indicators
 
-let female = series india.``Children out of school, female (% of female primary school age)``
-let male = series india.``Children out of school, male (% of male primary school age)``
+let femaleIndia = series india.``Children out of school, female (% of female primary school age)``
+let maleIndia = series india.``Children out of school, male (% of male primary school age)``
+let femaleChina = series china.``Children out of school, female (% of female primary school age)``
+let maleChina = series china.``Children out of school, male (% of male primary school age)``
 
-let femaleTrace =
+let femaleIndiaTrace =
     Bar(
-        x = female.[1947 .. 2016].Keys,
-        y = female.[1947 .. 2016].Values,
-        name = "Female"
+        x = femaleIndia.[1947 .. 2016].Keys,
+        y = femaleIndia.[1947 .. 2016].Values,
+        name = "Female (India)"
     )
 
-let maleTrace =
+let maleIndiaTrace =
     Bar(
-        x = male.[1947 .. 2016].Keys,
-        y = male.[1947 .. 2016].Values,
-        name = "Male"
+        x = maleIndia.[1947 .. 2016].Keys,
+        y = maleIndia.[1947 .. 2016].Values,
+        name = "Male (India)"
+    )
+
+let femaleChinaTrace =
+    Bar(
+        x = femaleChina.[1947 .. 2016].Keys,
+        y = femaleChina.[1947 .. 2016].Values,
+        name = "Female (China)"
+    )
+
+let maleChinaTrace =
+    Bar(
+        x = maleChina.[1947 .. 2016].Keys,
+        y = maleChina.[1947 .. 2016].Values,
+        name = "Male (China)"
     )
 
 let groupedLayout = Layout(barmode = "group")
 
-[femaleTrace; maleTrace]
+[femaleIndiaTrace; maleIndiaTrace; femaleChinaTrace; maleChinaTrace]
 |> Chart.Plot
 |> Chart.WithLayout groupedLayout
 |> Chart.WithXTitle "Year"
